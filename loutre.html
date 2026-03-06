@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <title>🦦💙</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Satisfy&family=Nunito:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100dvh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #e0f7fa, #b2ebf2, #80deea);
+        font-family: "Nunito", sans-serif;
+        overflow: hidden;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .container {
+        text-align: center;
+        padding: 1.5rem;
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 500px;
+      }
+
+      h1 {
+        font-family: "Satisfy", cursive;
+        font-size: clamp(1.8rem, 7vw, 2.8rem);
+        color: #006064;
+        margin-bottom: 2rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        line-height: 1.3;
+      }
+
+      .buttons {
+        display: flex;
+        gap: 1.2rem;
+        justify-content: center;
+        align-items: center;
+        min-height: 70px;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        padding: 14px 40px;
+        font-size: clamp(1rem, 4vw, 1.3rem);
+        font-weight: 600;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+        user-select: none;
+      }
+
+      .btn-yes {
+        background: linear-gradient(135deg, #26c6da, #00838f);
+        color: white;
+        box-shadow: 0 4px 20px rgba(0, 131, 143, 0.4);
+      }
+
+      .btn-yes:hover {
+        transform: scale(1.15);
+        box-shadow: 0 6px 30px rgba(0, 131, 143, 0.6);
+      }
+
+      .btn-no {
+        background: #eeeeee;
+        color: #666;
+        position: relative;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .result {
+        animation: fadeIn 0.5s ease-in;
+      }
+
+      .result h1 {
+        font-size: clamp(1.6rem, 6vw, 2.5rem);
+        margin-bottom: 1.5rem;
+      }
+
+      .bubble {
+        position: fixed;
+        bottom: -2rem;
+        font-size: 1.5rem;
+        animation: floatUp linear forwards;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      @keyframes floatUp {
+        0% {
+          transform: translateY(0) scale(1);
+          opacity: 0.8;
+        }
+        100% {
+          transform: translateY(-110vh) scale(1.4);
+          opacity: 0;
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: scale(0.8);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div id="bubbles"></div>
+
+      <h1>Veux-tu être ma loutre préférée ? 🦦💙</h1>
+
+      <div class="buttons">
+        <button class="btn btn-yes" id="btnYes">Ouiiii 🦦✨</button>
+        <button class="btn btn-no" id="btnNo">Non 😐</button>
+      </div>
+
+      <div class="result" id="result" style="display: none">
+        <h1>On flotte ensemble pour toujours 🦦💙🌊</h1>
+      </div>
+    </div>
+
+    <script>
+      const btnNo = document.getElementById("btnNo");
+      const btnYes = document.getElementById("btnYes");
+      const result = document.getElementById("result");
+      const bubblesContainer = document.getElementById("bubbles");
+
+      btnNo.addEventListener("mouseover", runAway);
+      btnNo.addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        runAway();
+      });
+
+      function runAway() {
+        const pad = 20;
+        const maxX = window.innerWidth - btnNo.offsetWidth - pad;
+        const maxY = window.innerHeight - btnNo.offsetHeight - pad;
+
+        btnNo.style.position = "fixed";
+        btnNo.style.left = Math.random() * maxX + "px";
+        btnNo.style.top = Math.random() * maxY + "px";
+        btnNo.style.zIndex = "1000";
+
+        const messages = [
+          "Non 😐",
+          "Hey 😳",
+          "La loutre est triste 🥺",
+          "On partage un poisson ? 🐟",
+          "Allez 🦦💔",
+          "Je coule... 🌊",
+          "DERNIÈRE BULLE 🫧",
+          "OUIIIII 🦦💙",
+        ];
+
+        btnNo.dataset.attempts = (btnNo.dataset.attempts || 0) * 1 + 1;
+        btnNo.textContent = messages[Math.min(btnNo.dataset.attempts, messages.length - 1)];
+
+        btnYes.style.transform = `scale(${1 + btnNo.dataset.attempts * 0.15})`;
+      }
+
+      btnYes.addEventListener("click", () => {
+        document.querySelector(".buttons").style.display = "none";
+        document.querySelector("h1").style.display = "none";
+        result.style.display = "block";
+
+        for (let i = 0; i < 25; i++) createBubble();
+      });
+
+      function createBubble() {
+        const bubble = document.createElement("span");
+        bubble.classList.add("bubble");
+        bubble.textContent = ["🫧", "🦦", "💙", "🌊"][Math.floor(Math.random() * 4)];
+        bubble.style.left = Math.random() * 100 + "vw";
+        bubble.style.fontSize = Math.random() * 1.5 + 0.8 + "rem";
+        bubble.style.animationDuration = Math.random() * 4 + 4 + "s";
+        bubblesContainer.appendChild(bubble);
+        bubble.addEventListener("animationend", () => bubble.remove());
+      }
+
+      setInterval(createBubble, 900);
+    </script>
+  </body>
+</html>

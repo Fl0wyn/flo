@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <title>🍷</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Satisfy&family=Nunito:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100dvh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #ffe0b2, #ffcc80, #ffb74d);
+        font-family: "Nunito", sans-serif;
+        overflow: hidden;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .container {
+        text-align: center;
+        padding: 1.5rem;
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 500px;
+      }
+
+      h1 {
+        font-family: "Satisfy", cursive;
+        font-size: clamp(1.8rem, 7vw, 2.8rem);
+        color: #e65100;
+        margin-bottom: 2rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        line-height: 1.3;
+        padding: 0 0.5rem;
+      }
+
+      .buttons {
+        display: flex;
+        gap: 1.2rem;
+        justify-content: center;
+        align-items: center;
+        min-height: 70px;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        padding: 14px 40px;
+        font-size: clamp(1rem, 4vw, 1.3rem);
+        font-family: "Nunito", sans-serif;
+        font-weight: 600;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+        touch-action: manipulation;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+
+      .btn-yes {
+        background: linear-gradient(135deg, #fb8c00, #ef6c00);
+        color: white;
+        box-shadow: 0 4px 20px rgba(239, 108, 0, 0.4);
+      }
+
+      .btn-yes:hover {
+        transform: scale(1.15);
+        box-shadow: 0 6px 30px rgba(239, 108, 0, 0.6);
+      }
+
+      .btn-no {
+        background: #eee;
+        color: #777;
+        position: relative;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .result {
+        animation: fadeIn 0.5s ease-in;
+      }
+
+      .result h1 {
+        font-size: clamp(1.6rem, 6vw, 2.5rem);
+        margin-bottom: 1.5rem;
+      }
+
+      .glass {
+        position: fixed;
+        bottom: -2rem;
+        font-size: 1.5rem;
+        animation: floatUp linear forwards;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      @keyframes floatUp {
+        0% {
+          transform: translateY(0) rotate(0deg);
+          opacity: 0.8;
+        }
+        100% {
+          transform: translateY(-110vh) rotate(360deg);
+          opacity: 0;
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: scale(0.8);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="hearts" id="hearts"></div>
+      <h1>Tu viens boire un verre chez John avec moi ? 🍷✨</h1>
+      <div class="buttons">
+        <button class="btn btn-yes" id="btnYes">Oui 🍻</button>
+        <button class="btn btn-no" id="btnNo">Non 🙈</button>
+      </div>
+      <div class="result" id="result" style="display: none">
+        <h1>Parfait ! Rendez-vous chez John alors 🍷😎✨</h1>
+      </div>
+    </div>
+
+    <script>
+      const btnNo = document.getElementById("btnNo");
+      const btnYes = document.getElementById("btnYes");
+      const result = document.getElementById("result");
+      const heartsContainer = document.getElementById("hearts");
+
+      btnNo.addEventListener("mouseover", runAway);
+      btnNo.addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        runAway();
+      });
+
+      function runAway() {
+        const pad = 20;
+        const maxX = window.innerWidth - btnNo.offsetWidth - pad;
+        const maxY = window.innerHeight - btnNo.offsetHeight - pad;
+        const randomX = Math.max(pad, Math.random() * maxX);
+        const randomY = Math.max(pad, Math.random() * maxY);
+
+        btnNo.style.position = "fixed";
+        btnNo.style.left = randomX + "px";
+        btnNo.style.top = randomY + "px";
+        btnNo.style.zIndex = "1000";
+        btnNo.style.transition = "none";
+
+        const messages = [
+          "Non 🙈",
+          "Tu es sûr(e) ? 😏",
+          "Juste un petit verre ? 🍷",
+          "Allez viens 😄",
+          "Promis on rigole bien 🍻",
+          "Dernière chance 😎",
+          "OUI OUI OUI 🍷✨",
+        ];
+
+        if (!btnNo.dataset.attempts) btnNo.dataset.attempts = 0;
+        btnNo.dataset.attempts = parseInt(btnNo.dataset.attempts) + 1;
+        const index = Math.min(
+          parseInt(btnNo.dataset.attempts),
+          messages.length - 1,
+        );
+        btnNo.textContent = messages[index];
+
+        const scale = 1 + parseInt(btnNo.dataset.attempts) * 0.15;
+        btnYes.style.transform = `scale(${scale})`;
+      }
+
+      btnYes.addEventListener("click", () => {
+        document.querySelector(".buttons").style.display = "none";
+        document.querySelector("h1").style.display = "none";
+        result.style.display = "block";
+
+        for (let i = 0; i < 30; i++) {
+          createGlass();
+        }
+      });
+
+      function createGlass() {
+        const glass = document.createElement("span");
+        glass.classList.add("glass");
+        glass.textContent = ["🍷", "🍸", "🍹", "🥂", "🍻"][
+          Math.floor(Math.random() * 5)
+        ];
+        glass.style.left = Math.random() * 100 + "vw";
+        glass.style.fontSize = Math.random() * 1.5 + 0.8 + "rem";
+        const duration = Math.random() * 4 + 4;
+        glass.style.animationDuration = duration + "s";
+        heartsContainer.appendChild(glass);
+        glass.addEventListener("animationend", () => glass.remove());
+      }
+
+      setInterval(() => createGlass(), 900);
+    </script>
+  </body>
+</html>
