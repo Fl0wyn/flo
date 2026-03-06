@@ -2,8 +2,11 @@
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-    <title>🦦💙</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <title>🦦 Loutre</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -64,7 +67,9 @@
         border: none;
         border-radius: 50px;
         cursor: pointer;
-        transition: transform 0.2s, box-shadow 0.2s;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
         user-select: none;
       }
 
@@ -178,7 +183,8 @@
         ];
 
         btnNo.dataset.attempts = (btnNo.dataset.attempts || 0) * 1 + 1;
-        btnNo.textContent = messages[Math.min(btnNo.dataset.attempts, messages.length - 1)];
+        btnNo.textContent =
+          messages[Math.min(btnNo.dataset.attempts, messages.length - 1)];
 
         btnYes.style.transform = `scale(${1 + btnNo.dataset.attempts * 0.15})`;
       }
@@ -194,7 +200,9 @@
       function createBubble() {
         const bubble = document.createElement("span");
         bubble.classList.add("bubble");
-        bubble.textContent = ["🫧", "🦦", "💙", "🌊"][Math.floor(Math.random() * 4)];
+        bubble.textContent = ["🫧", "🦦", "💙", "🌊"][
+          Math.floor(Math.random() * 4)
+        ];
         bubble.style.left = Math.random() * 100 + "vw";
         bubble.style.fontSize = Math.random() * 1.5 + 0.8 + "rem";
         bubble.style.animationDuration = Math.random() * 4 + 4 + "s";
